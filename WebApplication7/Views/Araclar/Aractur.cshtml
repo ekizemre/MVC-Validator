@@ -1,0 +1,58 @@
+﻿@model IEnumerable<emreekiz.Models.TB_Araclar>
+
+@{
+    ViewBag.Title = "Aractur";
+    Layout = "~/Views/Shared/Personel_Layout.cshtml";
+
+
+    string veri = Request.RequestContext.RouteData.Values["id"].ToString();
+
+
+
+}
+
+
+
+
+<h2>Aractur</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.KoltukID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Marka)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PlakaID)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+       if(item.Marka == @veri) { 
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.KoltukID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Marka)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlakaID)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.AracID }) |
+                @Html.ActionLink("AracDetay", "AracDetay", new { id = item.AracID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.AracID })
+            </td>
+        </tr>
+        }
+    }
+
+</table>

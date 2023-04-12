@@ -1,0 +1,45 @@
+﻿@model IEnumerable<emreekiz.Models.TB_Araclar>
+
+@{
+    ViewBag.Title = "AracDetay";
+    Layout = "~/Views/Shared/Personel_Layout.cshtml";
+}
+
+<h2>AracDetay</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Marka)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PlakaID)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Marka)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PlakaID)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.AracID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.AracID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.AracID })
+        </td>
+    </tr>
+}
+
+</table>

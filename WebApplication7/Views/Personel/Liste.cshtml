@@ -1,0 +1,47 @@
+﻿@model IEnumerable<emreekiz.Models.TB_Personel>
+
+@{
+    ViewBag.Title = "Personellerimiz";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Liste</h2>
+
+<p>
+    @Html.ActionLink("Liste", "Personellerimiz")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PersonelAd)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PersonelSoyad)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AraçID)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.PersonelAd)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PersonelSoyad)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AraçID)
+        </td>
+        <td>
+            @Html.ActionLink("Düzenle", "Düzenle", new { id=item.PersonelID }) |
+            @Html.ActionLink("Detaylar", "Detaylar", new { id=item.PersonelID }) |
+            @Html.ActionLink("Sil", "Sil", new { id=item.PersonelID }) 
+
+        </td>
+    </tr>
+}
+
+</table>

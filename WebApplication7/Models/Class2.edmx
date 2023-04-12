@@ -1,0 +1,576 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ASTOR2Model1.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Kullanici_Bilgi">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="kullanici_adi" Type="nvarchar" MaxLength="50" />
+          <Property Name="sifre" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ASTOR2.dbo.TB_Admin' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="TB_Admin">
+          <Key>
+            <PropertyRef Name="admin" />
+            <PropertyRef Name="password" />
+          </Key>
+          <Property Name="admin" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TB_Araclar">
+          <Key>
+            <PropertyRef Name="AracID" />
+          </Key>
+          <Property Name="AracID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KoltukID" Type="int" />
+          <Property Name="Marka" Type="varchar" MaxLength="30" />
+          <Property Name="PlakaID" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ASTOR2.dbo.TB_Kullanıcı' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="TB_Kullanıcı">
+          <Key>
+            <PropertyRef Name="KullanıcıAdı" />
+            <PropertyRef Name="Sifre" />
+          </Key>
+          <Property Name="KullanıcıAdı" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Sifre" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TB_Müsteriler">
+          <Key>
+            <PropertyRef Name="MüsteriID" />
+          </Key>
+          <Property Name="MüsteriID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MüsteriAd" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="MüsteriSoyad" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Tel" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="TCNO" Type="char" MaxLength="11" Nullable="false" />
+          <Property Name="HesKodu" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="AraçID" Type="int" />
+        </EntityType>
+        <EntityType Name="TB_Personel">
+          <Key>
+            <PropertyRef Name="PersonelID" />
+          </Key>
+          <Property Name="PersonelID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PersonelAd" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="PersonelSoyad" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="AraçID" Type="int" />
+        </EntityType>
+        <EntityType Name="TB_Seferler">
+          <Key>
+            <PropertyRef Name="SeferID" />
+          </Key>
+          <Property Name="SeferID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KalkışŞehirAd" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="VarışŞehirAd" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="SöförID" Type="int" Nullable="false" />
+          <Property Name="KalkışZamanı" Type="datetime" Nullable="false" />
+          <Property Name="TahminiSüre" Type="int" Nullable="false" />
+          <Property Name="BiletTutar" Type="int" />
+          <Property Name="AraçID" Type="int" />
+        </EntityType>
+        <EntityType Name="TB_şoförler">
+          <Key>
+            <PropertyRef Name="SöförID" />
+          </Key>
+          <Property Name="SöförID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Söförad" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Söförsoyad" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="AraçID" Type="int" />
+          <Property Name="TotalTutar" Type="float" />
+        </EntityType>
+        <Function Name="araçgetir" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="vPlakaID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="biletfiyat" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="float">
+          <Parameter Name="vBiletTutar" Type="int" Mode="In" />
+          <Parameter Name="vSeferID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="fn_araçplaka" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
+          <Parameter Name="vPlakaID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="fn_birlestir" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
+          <Parameter Name="vAraçID" Type="int" Mode="In" />
+          <Parameter Name="vSöförad" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="MüsteriDurumu" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_aracekle" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="vAraçID" Type="nvarchar" Mode="In" />
+          <Parameter Name="vPlakaID" Type="int" Mode="In" />
+          <Parameter Name="vMarka" Type="varchar" Mode="In" />
+          <Parameter Name="vKoltukID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_AraçGüncelle" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="vMarka" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_araçsil" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="vAraçID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_cursorAraçkayıt11" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_müsteriekle" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="vMüsteriID" Type="int" Mode="In" />
+          <Parameter Name="vMüsteriAd" Type="varchar" Mode="In" />
+          <Parameter Name="vMüsteriSoyad" Type="varchar" Mode="In" />
+          <Parameter Name="vTel" Type="char" Mode="In" />
+          <Parameter Name="vTCNO" Type="char" Mode="In" />
+          <Parameter Name="vHesKodu" Type="char" Mode="In" />
+          <Parameter Name="vAraçID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_SeferEkle" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="vSeferID" Type="int" Mode="In" />
+          <Parameter Name="vKalkışŞehirAd" Type="varchar" Mode="In" />
+          <Parameter Name="vVarışŞehirAd" Type="varchar" Mode="In" />
+          <Parameter Name="vSöförID" Type="int" Mode="In" />
+          <Parameter Name="vKalkışZamanı" Type="datetime" Mode="In" />
+          <Parameter Name="vTahminiSüre" Type="int" Mode="In" />
+          <Parameter Name="vBiletTutar" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_Seferİptal" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="vSeferID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_Söförekle" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="vSöförID" Type="int" Mode="In" />
+          <Parameter Name="vSöförSoyad" Type="varchar" Mode="In" />
+          <Parameter Name="vSöförad" Type="varchar" Mode="In" />
+          <Parameter Name="vAraçID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="TotalTutar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="float">
+          <Parameter Name="vTotalTutar" Type="int" Mode="In" />
+          <Parameter Name="vAraçID" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="ASTOR2Model1StoreContainer">
+          <EntitySet Name="Kullanici_Bilgi" EntityType="Self.Kullanici_Bilgi" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_Araclar" EntityType="Self.TB_Araclar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_Müsteriler" EntityType="Self.TB_Müsteriler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_Personel" EntityType="Self.TB_Personel" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_Seferler" EntityType="Self.TB_Seferler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_şoförler" EntityType="Self.TB_şoförler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_Admin" EntityType="Self.TB_Admin" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [TB_Admin].[admin] AS [admin], 
+    [TB_Admin].[password] AS [password]
+    FROM [dbo].[TB_Admin] AS [TB_Admin]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="TB_Kullanıcı" EntityType="Self.TB_Kullanıcı" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [TB_Kullanıcı].[KullanıcıAdı] AS [KullanıcıAdı], 
+    [TB_Kullanıcı].[Sifre] AS [Sifre]
+    FROM [dbo].[TB_Kullanıcı] AS [TB_Kullanıcı]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ASTOR2Model1" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Kullanici_Bilgi">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="kullanici_adi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sifre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TB_Araclar">
+          <Key>
+            <PropertyRef Name="AracID" />
+          </Key>
+          <Property Name="AracID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KoltukID" Type="Int32" />
+          <Property Name="Marka" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PlakaID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="TB_Müsteriler">
+          <Key>
+            <PropertyRef Name="MüsteriID" />
+          </Key>
+          <Property Name="MüsteriID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MüsteriAd" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MüsteriSoyad" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Tel" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="TCNO" Type="String" MaxLength="11" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="HesKodu" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="AraçID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="TB_Personel">
+          <Key>
+            <PropertyRef Name="PersonelID" />
+          </Key>
+          <Property Name="PersonelID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PersonelAd" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PersonelSoyad" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AraçID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="TB_Seferler">
+          <Key>
+            <PropertyRef Name="SeferID" />
+          </Key>
+          <Property Name="SeferID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KalkışŞehirAd" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="VarışŞehirAd" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SöförID" Type="Int32" Nullable="false" />
+          <Property Name="KalkışZamanı" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TahminiSüre" Type="Int32" Nullable="false" />
+          <Property Name="BiletTutar" Type="Int32" />
+          <Property Name="AraçID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="TB_şoförler">
+          <Key>
+            <PropertyRef Name="SöförID" />
+          </Key>
+          <Property Name="SöförID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Söförad" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Söförsoyad" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AraçID" Type="Int32" />
+          <Property Name="TotalTutar" Type="Double" />
+        </EntityType>
+        <EntityType Name="TB_Admin">
+          <Key>
+            <PropertyRef Name="admin" />
+            <PropertyRef Name="password" />
+          </Key>
+          <Property Name="admin" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TB_Kullanıcı">
+          <Key>
+            <PropertyRef Name="KullanıcıAdı" />
+            <PropertyRef Name="Sifre" />
+          </Key>
+          <Property Name="KullanıcıAdı" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Sifre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="ASTOR2Entities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Kullanici_Bilgi" EntityType="Self.Kullanici_Bilgi" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="TB_Araclar" EntityType="Self.TB_Araclar" />
+          <EntitySet Name="TB_Müsteriler" EntityType="Self.TB_Müsteriler" />
+          <EntitySet Name="TB_Personel" EntityType="Self.TB_Personel" />
+          <EntitySet Name="TB_Seferler" EntityType="Self.TB_Seferler" />
+          <EntitySet Name="TB_şoförler" EntityType="Self.TB_şoförler" />
+          <EntitySet Name="TB_Admin" EntityType="Self.TB_Admin" />
+          <EntitySet Name="TB_Kullanıcı" EntityType="Self.TB_Kullanıcı" />
+          <FunctionImport Name="araçgetir">
+            <Parameter Name="vPlakaID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="MüsteriDurumu" ReturnType="Collection(ASTOR2Model1.MüsteriDurumu_Result)" />
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_aracekle">
+            <Parameter Name="vAraçID" Mode="In" Type="String" />
+            <Parameter Name="vPlakaID" Mode="In" Type="Int32" />
+            <Parameter Name="vMarka" Mode="In" Type="String" />
+            <Parameter Name="vKoltukID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_AraçGüncelle">
+            <Parameter Name="vMarka" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_araçsil">
+            <Parameter Name="vAraçID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_cursorAraçkayıt11" />
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(ASTOR2Model1.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(ASTOR2Model1.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_müsteriekle">
+            <Parameter Name="vMüsteriID" Mode="In" Type="Int32" />
+            <Parameter Name="vMüsteriAd" Mode="In" Type="String" />
+            <Parameter Name="vMüsteriSoyad" Mode="In" Type="String" />
+            <Parameter Name="vTel" Mode="In" Type="String" />
+            <Parameter Name="vTCNO" Mode="In" Type="String" />
+            <Parameter Name="vHesKodu" Mode="In" Type="String" />
+            <Parameter Name="vAraçID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_SeferEkle">
+            <Parameter Name="vSeferID" Mode="In" Type="Int32" />
+            <Parameter Name="vKalkışŞehirAd" Mode="In" Type="String" />
+            <Parameter Name="vVarışŞehirAd" Mode="In" Type="String" />
+            <Parameter Name="vSöförID" Mode="In" Type="Int32" />
+            <Parameter Name="vKalkışZamanı" Mode="In" Type="DateTime" />
+            <Parameter Name="vTahminiSüre" Mode="In" Type="Int32" />
+            <Parameter Name="vBiletTutar" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_Seferİptal">
+            <Parameter Name="vSeferID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_Söförekle">
+            <Parameter Name="vSöförID" Mode="In" Type="Int32" />
+            <Parameter Name="vSöförSoyad" Mode="In" Type="String" />
+            <Parameter Name="vSöförad" Mode="In" Type="String" />
+            <Parameter Name="vAraçID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+        </EntityContainer>
+        <ComplexType Name="MüsteriDurumu_Result">
+          <Property Type="Int32" Name="MüsteriID" Nullable="false" />
+          <Property Type="String" Name="MüsteriAd" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="MüsteriSoyad" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Tel" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="TCNO" Nullable="false" MaxLength="11" />
+          <Property Type="String" Name="HesKodu" Nullable="false" MaxLength="10" />
+          <Property Type="Int32" Name="AraçID" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ASTOR2Model1StoreContainer" CdmEntityContainer="ASTOR2Entities1">
+          <EntitySetMapping Name="Kullanici_Bilgi">
+            <EntityTypeMapping TypeName="ASTOR2Model1.Kullanici_Bilgi">
+              <MappingFragment StoreEntitySet="Kullanici_Bilgi">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="kullanici_adi" ColumnName="kullanici_adi" />
+                <ScalarProperty Name="sifre" ColumnName="sifre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="ASTOR2Model1.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_Araclar">
+            <EntityTypeMapping TypeName="ASTOR2Model1.TB_Araclar">
+              <MappingFragment StoreEntitySet="TB_Araclar">
+                <ScalarProperty Name="AracID" ColumnName="AracID" />
+                <ScalarProperty Name="KoltukID" ColumnName="KoltukID" />
+                <ScalarProperty Name="Marka" ColumnName="Marka" />
+                <ScalarProperty Name="PlakaID" ColumnName="PlakaID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_Müsteriler">
+            <EntityTypeMapping TypeName="ASTOR2Model1.TB_Müsteriler">
+              <MappingFragment StoreEntitySet="TB_Müsteriler">
+                <ScalarProperty Name="MüsteriID" ColumnName="MüsteriID" />
+                <ScalarProperty Name="MüsteriAd" ColumnName="MüsteriAd" />
+                <ScalarProperty Name="MüsteriSoyad" ColumnName="MüsteriSoyad" />
+                <ScalarProperty Name="Tel" ColumnName="Tel" />
+                <ScalarProperty Name="TCNO" ColumnName="TCNO" />
+                <ScalarProperty Name="HesKodu" ColumnName="HesKodu" />
+                <ScalarProperty Name="AraçID" ColumnName="AraçID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_Personel">
+            <EntityTypeMapping TypeName="ASTOR2Model1.TB_Personel">
+              <MappingFragment StoreEntitySet="TB_Personel">
+                <ScalarProperty Name="PersonelID" ColumnName="PersonelID" />
+                <ScalarProperty Name="PersonelAd" ColumnName="PersonelAd" />
+                <ScalarProperty Name="PersonelSoyad" ColumnName="PersonelSoyad" />
+                <ScalarProperty Name="AraçID" ColumnName="AraçID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_Seferler">
+            <EntityTypeMapping TypeName="ASTOR2Model1.TB_Seferler">
+              <MappingFragment StoreEntitySet="TB_Seferler">
+                <ScalarProperty Name="SeferID" ColumnName="SeferID" />
+                <ScalarProperty Name="KalkışŞehirAd" ColumnName="KalkışŞehirAd" />
+                <ScalarProperty Name="VarışŞehirAd" ColumnName="VarışŞehirAd" />
+                <ScalarProperty Name="SöförID" ColumnName="SöförID" />
+                <ScalarProperty Name="KalkışZamanı" ColumnName="KalkışZamanı" />
+                <ScalarProperty Name="TahminiSüre" ColumnName="TahminiSüre" />
+                <ScalarProperty Name="BiletTutar" ColumnName="BiletTutar" />
+                <ScalarProperty Name="AraçID" ColumnName="AraçID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_şoförler">
+            <EntityTypeMapping TypeName="ASTOR2Model1.TB_şoförler">
+              <MappingFragment StoreEntitySet="TB_şoförler">
+                <ScalarProperty Name="SöförID" ColumnName="SöförID" />
+                <ScalarProperty Name="Söförad" ColumnName="Söförad" />
+                <ScalarProperty Name="Söförsoyad" ColumnName="Söförsoyad" />
+                <ScalarProperty Name="AraçID" ColumnName="AraçID" />
+                <ScalarProperty Name="TotalTutar" ColumnName="TotalTutar" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_Admin">
+            <EntityTypeMapping TypeName="ASTOR2Model1.TB_Admin">
+              <MappingFragment StoreEntitySet="TB_Admin">
+                <ScalarProperty Name="admin" ColumnName="admin" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_Kullanıcı">
+            <EntityTypeMapping TypeName="ASTOR2Model1.TB_Kullanıcı">
+              <MappingFragment StoreEntitySet="TB_Kullanıcı">
+                <ScalarProperty Name="KullanıcıAdı" ColumnName="KullanıcıAdı" />
+                <ScalarProperty Name="Sifre" ColumnName="Sifre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="araçgetir" FunctionName="ASTOR2Model1.Store.araçgetir" />
+          <FunctionImportMapping FunctionImportName="MüsteriDurumu" FunctionName="ASTOR2Model1.Store.MüsteriDurumu">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ASTOR2Model1.MüsteriDurumu_Result">
+                <ScalarProperty Name="MüsteriID" ColumnName="MüsteriID" />
+                <ScalarProperty Name="MüsteriAd" ColumnName="MüsteriAd" />
+                <ScalarProperty Name="MüsteriSoyad" ColumnName="MüsteriSoyad" />
+                <ScalarProperty Name="Tel" ColumnName="Tel" />
+                <ScalarProperty Name="TCNO" ColumnName="TCNO" />
+                <ScalarProperty Name="HesKodu" ColumnName="HesKodu" />
+                <ScalarProperty Name="AraçID" ColumnName="AraçID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="ASTOR2Model1.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_aracekle" FunctionName="ASTOR2Model1.Store.sp_aracekle" />
+          <FunctionImportMapping FunctionImportName="sp_AraçGüncelle" FunctionName="ASTOR2Model1.Store.sp_AraçGüncelle" />
+          <FunctionImportMapping FunctionImportName="sp_araçsil" FunctionName="ASTOR2Model1.Store.sp_araçsil" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="ASTOR2Model1.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_cursorAraçkayıt11" FunctionName="ASTOR2Model1.Store.sp_cursorAraçkayıt11" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="ASTOR2Model1.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="ASTOR2Model1.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ASTOR2Model1.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="ASTOR2Model1.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ASTOR2Model1.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_müsteriekle" FunctionName="ASTOR2Model1.Store.sp_müsteriekle" />
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="ASTOR2Model1.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_SeferEkle" FunctionName="ASTOR2Model1.Store.sp_SeferEkle" />
+          <FunctionImportMapping FunctionImportName="sp_Seferİptal" FunctionName="ASTOR2Model1.Store.sp_Seferİptal" />
+          <FunctionImportMapping FunctionImportName="sp_Söförekle" FunctionName="ASTOR2Model1.Store.sp_Söförekle" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="ASTOR2Model1.Store.sp_upgraddiagrams" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

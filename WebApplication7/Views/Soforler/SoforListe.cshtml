@@ -1,0 +1,52 @@
+﻿@model IEnumerable<emreekiz.Models.TB_şoförler>
+
+@{
+    ViewBag.Title = "SoforListe";
+    Layout = "~/Views/Shared/Personel_Layout.cshtml";
+}
+
+<h2>SoforListe</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Söförad)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Söförsoyad)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AraçID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TotalTutar)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Söförad)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Söförsoyad)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AraçID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TotalTutar)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.SöförID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.SöförID }) |
+            @Html.ActionLink("Sil", "Sil", new { id=item.SöförID })
+        </td>
+    </tr>
+}
+
+</table>

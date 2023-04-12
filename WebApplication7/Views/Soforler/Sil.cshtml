@@ -1,0 +1,57 @@
+﻿@model emreekiz.Models.TB_şoförler
+
+@{
+    ViewBag.Title = "Sil";
+    Layout = "~/Views/Shared/Personel_Layout.cshtml";
+}
+
+<h2>Sil</h2>
+
+<h3>Gerçekten Silmek İstiyor musunuz?</h3>
+<div>
+    <h4>Şoförler</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Söförad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Söförad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Söförsoyad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Söförsoyad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AraçID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AraçID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalTutar)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalTutar)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-danger" /> |
+            @Html.ActionLink("Listeye Geri Dön", "Index")
+        </div>
+    }
+</div>
